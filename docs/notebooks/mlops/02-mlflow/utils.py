@@ -50,9 +50,8 @@ def compute_targets(data):
     # Create target column and filter outliers
     data['duration'] = data.lpep_dropoff_datetime - data.lpep_pickup_datetime
     data['duration'] = data.duration.dt.total_seconds() / 60
-    
-    targets = data.duration.values
-    return targets
+
+    return data.duration.values
 
 
 def filter_target_outliers(data, targets, y_min=1, y_max=60):
@@ -85,10 +84,10 @@ def plot_duration_distribution(model, X_train, y_train, X_valid, y_valid):
 
 def preprocess_datasets(train_data_path, valid_data_path):
     """Preprocess datasets for model training and validation. Save pipeline."""
- 
+
     X_train = pd.read_parquet(train_data_path)
     X_valid = pd.read_parquet(valid_data_path)
-    
+
     # Compute labels
     y_train = compute_targets(X_train)
     y_valid = compute_targets(X_valid)
@@ -96,7 +95,7 @@ def preprocess_datasets(train_data_path, valid_data_path):
     # Filter train and valid (!) data. (i.e. only validate on t=(1, 60) range.)
     X_train, y_train = filter_target_outliers(X_train, y_train)
     X_valid, y_valid = filter_target_outliers(X_valid, y_valid)
-    
+
     # Feature selection and engineering
     categorical = ['PU_DO']
     numerical = ['trip_distance']

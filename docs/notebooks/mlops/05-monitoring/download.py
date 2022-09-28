@@ -7,13 +7,14 @@ files = [
     ("fhv_tripdata_2021-12.parquet", ".")
 ]
 
-host = f"https://raw.githubusercontent.com/alexeygrigorev/datasets/master/nyc-tlc/fhv"
-    
-print(f"Downloading files:")
+host = "https://raw.githubusercontent.com/alexeygrigorev/datasets/master/nyc-tlc/fhv"
+
+
+print("Downloading files:")
 for file, path in files:
     response = requests.get(url=f"{host}/{file}", stream=True)
     save_path = f"{path}/{file}"
-    
+
     with open(save_path, "wb") as handle:
         for data in tqdm(
             response.iter_content(),

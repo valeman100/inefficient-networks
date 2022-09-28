@@ -31,7 +31,7 @@ async def get_post_or_404(
 async def pagination(
     skip: int=Query(0, ge=0), limit: int=Query(10, ge=0)
 ) -> Tuple[int, int]:
-    
+
     capped_limit = min(100, limit)
     return (skip, capped_limit)
 
@@ -75,9 +75,7 @@ async def list_posts(
     skip, limit = pagination
     select_query = posts.select().offset(skip).limit(limit)
     rows = await database.fetch_all(select_query)
-    results = [PostDB(**row) for row in rows]
-    
-    return results
+    return [PostDB(**row) for row in rows]
 
 
 @app.patch("/posts/{id}", response_model=PostDB)

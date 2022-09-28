@@ -33,8 +33,7 @@ async def get_post_or_404(id: int) -> PostTortoise:
 async def list_posts(pagination: Tuple[int, int]=Depends(pagination)) -> List[PostDB]:
     skip, limit = pagination
     posts = await PostTortoise.all().offset(skip).limit(limit)
-    results = [PostDB.from_orm(post) for post in posts]
-    return results
+    return [PostDB.from_orm(post) for post in posts]
 
 
 @app.get("/posts/{id}", response_model=PostDB)

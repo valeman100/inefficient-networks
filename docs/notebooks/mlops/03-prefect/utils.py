@@ -81,7 +81,7 @@ def fit_preprocessor(train_data):
     # Fit only on train set
     preprocessor.fit(X_train, y_train)
     joblib.dump(preprocessor, artifacts / 'preprocessor.pkl')
-    
+
     return preprocessor
 
 

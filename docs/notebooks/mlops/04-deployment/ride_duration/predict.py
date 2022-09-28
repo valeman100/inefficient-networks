@@ -11,15 +11,11 @@ def load_model(experiment_id, run_id):
     """Get model from our S3 artifacts store."""
 
     source = f"s3://mlflow-models-ron/{experiment_id}/{run_id}/artifacts/model"
-    model = mlflow.pyfunc.load_model(source)
-    
-    return model
+    return mlflow.pyfunc.load_model(source)
 
 
 def make_prediction(model, input_data: Union[list[dict], pd.DataFrame]):
     """Make prediction from features dict or DataFrame."""
     
     X = prepare_features(input_data)
-    preds = model.predict(X)
-
-    return preds
+    return model.predict(X)

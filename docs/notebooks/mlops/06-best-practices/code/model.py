@@ -7,14 +7,12 @@ import mlflow
 
 def load_model(model_location):
     """Load MLflow model from path."""
-    model = mlflow.pyfunc.load_model(model_location)
-    return model
+    return mlflow.pyfunc.load_model(model_location)
 
 
 def base64_decode(encoded_data):
     decoded_data = base64.b64decode(encoded_data).decode("utf-8")
-    ride_event = json.loads(decoded_data)
-    return ride_event
+    return json.loads(decoded_data)
 
 
 class ModelService:
@@ -24,10 +22,10 @@ class ModelService:
         self.callbacks = callbacks or []
 
     def prepare_features(self, ride):
-        features = {}
-        features["PU_DO"] = f"{ride['PULocationID']}_{ride['DOLocationID']}"
-        features["trip_distance"] = ride["trip_distance"]
-        return features
+        return {
+            "PU_DO": f"{ride['PULocationID']}_{ride['DOLocationID']}",
+            "trip_distance": ride["trip_distance"],
+        }
 
     def predict(self, features):
         pred = self.model.predict(features)
@@ -96,10 +94,8 @@ def init(
         kinesis_callback = KinesisCallback(kinesis_client, predictions_stream_name)
         callbacks.append(kinesis_callback.put_record)
 
-    model_service = ModelService(
+    return ModelService(
         model=model,
         model_version=model_version,
         callbacks=callbacks,
     )
-
-    return model_service
