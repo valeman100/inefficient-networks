@@ -50,7 +50,7 @@ def get_paths(run_date, taxi_type, run_id):
         f'{taxi_type}_tripdata_'
         f'{year:04d}-{month:02d}.parquet'
     )
-    
+
     output_file = (
         f's3://nyc-duration-prediction-ron/' 
         f'taxi_type={taxi_type}/'
@@ -73,7 +73,7 @@ def apply_model(input_file, output_file, experiment_id, run_id):
     logger.info(f'Loading model {experiment_id}/{run_id}')
     model = load_model(experiment_id, run_id)
 
-    logger.info(f'Applying the model')
+    logger.info('Applying the model')
     y_pred = make_prediction(model, df)
 
     logger.info(f'Saving the result to {output_file}')
